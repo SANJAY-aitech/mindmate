@@ -3,8 +3,7 @@ let currentUser = null;
 let selectedMood = null;
 let chatHistory = [];
 
-// In-memory user storage (replace with backend database)
-let registeredUsers = [];
+
 
 // Page navigation functions
 function showPage(pageId) {
@@ -23,102 +22,88 @@ function showLogin(role) {
 
 // Student Signup Function
 function handleStudentSignup(event) {
-    console.log('handleStudentSignup called');
     event.preventDefault();
-    
-    const username = document.getElementById('signup-username').value.trim();
+
+    const name = document.getElementById('signup-username').value.trim();
     const email = document.getElementById('signup-email').value.trim();
     const password = document.getElementById('signup-password').value.trim();
-    
-    console.log('Student signup attempt:', { username, email, password: password ? '***' : 'empty' });
-    
-    // Clear any existing messages
+
     clearMessages();
-    
-    // Validation
-    if (!username || !email || !password) {
+
+    if (!name || !email || !password) {
         showMessage('Please fill in all fields.', 'error');
         return false;
     }
-    
+
     if (password.length < 6) {
         showMessage('Password must be at least 6 characters long.', 'error');
         return false;
     }
-    
-    // Check if username already exists
-    if (registeredUsers.find(user => user.username === username)) {
-        showMessage('Username already exists. Please choose a different one.', 'error');
-        return false;
-    }
-    
-    // Check if email already exists
-    if (registeredUsers.find(user => user.email === email)) {
-        showMessage('Email already registered. Please use a different email.', 'error');
-        return false;
-    }
-    
-    // Create new user
-    const newUser = {
-        username: username,
-        email: email,
-        password: password, // In production, this should be hashed
-        type: 'student',
-        registeredAt: new Date()
-    };
-    
-    // Save user to storage
-    registeredUsers.push(newUser);
-    console.log('New user registered:', newUser);
-    console.log('All registered users:', registeredUsers);
-    
-    // Show success message
-    showMessage('Account created successfully! Please sign in.', 'success');
-    
-    // Clear form
-    document.getElementById('student-signup-form').reset();
-    
-    // Redirect to login after 2 seconds
-    setTimeout(() => {
-        showPage('student-login');
-    }, 2000);
-    
+
+    fetch('http://localhost:5000/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success') {
+            showMessage('Account created successfully! Please sign in.', 'success');
+            document.getElementById('student-signup-form').reset();
+            setTimeout(() => showPage('student-login'), 2000);
+        } else {
+            showMessage(data.message, 'error');
+        }
+    })
+    .catch(err => {
+        console.error('Signup error:', err);
+        showMessage('Server error. Try again later.', 'error');
+    });
+
     return false;
 }
 
-// Authentication functions with enhanced debugging
+
+// Student Login Function
 function handleStudentLogin(event) {
-    console.log('handleStudentLogin called');
     event.preventDefault();
-    
-    const username = document.getElementById('student-username').value.trim();
+
+    const email = document.getElementById('student-username').value.trim();  // This should be email now
     const password = document.getElementById('student-password').value.trim();
-    
-    console.log('Student login attempt:', { username, password: password ? '***' : 'empty' });
-    
-    // Clear any existing messages
+
     clearMessages();
-    
-    // Basic validation
-    if (!username || !password) {
-        showMessage('Please enter both username and password.', 'error');
+
+    if (!email || !password) {
+        showMessage('Please enter both email and password.', 'error');
         return false;
     }
-    
-    // Check credentials against registered users
-    if (authenticateStudent(username, password)) {
-        currentUser = { type: 'student', username: username };
-        console.log('Student logged in successfully:', currentUser);
-        showPage('student-dashboard');
-        
-        // TODO: Integration point for backend user session
-        // Example: await createUserSession(currentUser);
-    } else {
-        showMessage('Invalid credentials. Please try again.', 'error');
-    }
-    
+
+    fetch('http://localhost:5000/student-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.user) {
+            currentUser = data.user;
+            selectedMood = null;
+            chatHistory = [];
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showPage('student-dashboard');
+        } else {
+            showMessage(data.error, 'error');
+        }
+    })
+    .catch(err => {
+        console.error('Login error:', err);
+        showMessage('Server error. Try again later.', 'error');
+    });
+
     return false;
 }
+
+
 
 function handleTeacherLogin(event) {
     console.log('handleTeacherLogin called');
