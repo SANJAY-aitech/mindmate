@@ -143,23 +143,9 @@ function handleTeacherLogin(event) {
     return false;
 }
 
-// Mock authentication functions
-function authenticateStudent(username, password) {
-    // Check against registered users
-    const user = registeredUsers.find(user => 
-        user.username === username && 
-        user.password === password && 
-        user.type === 'student'
-    );
-    
-    console.log('Authenticating student:', username, 'Found user:', user ? 'Yes' : 'No');
-    return user !== undefined;
-}
+
 
 function authenticateTeacher(teacherId, password) {
-    // For demo purposes - accept any non-empty credentials
-    // TODO: Replace with actual API call to backend
-    console.log('Authenticating teacher:', teacherId);
     return teacherId.length > 0 && password.length > 0;
 }
 
@@ -574,16 +560,4 @@ function clearMessages() {
             link.click();
         }
 
-        // Initialize the application
-        function initializeApp() {
-            console.log('MindMate AI Application Initialized');
-            console.log('Ready for backend integration:');
-            console.log('- Vector Database (ChromaDB)');
-            console.log('- LLM Services');
-            console.log('- Authentication APIs');
-            console.log('- Real-time WebSocket connections');
-            
-        }
-
-        // Call initialization when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initializeApp);
+      

@@ -6,7 +6,7 @@
     <title>MindMate AI - Mental Wellness Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <link rel="stylesheet" href="styles/styles.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <!-- Floating Background Animation -->
@@ -48,7 +48,7 @@
                 </div>
                 <form id="student-login-form" onsubmit="handleStudentLogin(event)">
                     <div class="form-group">
-                        <label class="form-label">Username</label>
+                        <label class="form-label">Email</label>
                         <input type="text" class="form-input" id="student-username" required>
                     </div>
                     <div class="form-group">
@@ -189,6 +189,6 @@
             </div>
         </div>
     </div>
-    <script src="scripts/app.js"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
