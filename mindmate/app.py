@@ -142,34 +142,27 @@ def chat():
 
     return jsonify({"response": response})
 
-
 @app.route('/history', methods=['GET'])
 def get_history():
     user_email = request.args.get("email", "")
     if not user_email:
         return jsonify({"error": "Missing email"}), 400
 
-    # Retrieve past conversation pairs from Pinecone using metadata
     results = vector_store.similarity_search(
-        query="MindMate conversation history",  # dummy query
+        query="MindMate conversation history",
         k=50,
         filter={"email": user_email}
     )
 
     history = []
     for doc in results:
-        if "User:" in doc.page_content and "AI:" in doc.page_content:
-            try:
-                user_line, ai_line = doc.page_content.split("AI:")
-                user_msg = user_line.replace("User:", "").strip()
-                ai_msg = ai_line.strip()
-                history.append({"user": user_msg, "bot": ai_msg})
-            except Exception:
-                continue
+        lines = doc.page_content.strip().splitlines()
+        user_msg = next((line.replace("User:", "").strip() for line in lines if line.startswith("User:")), None)
+        ai_msg = next((line.replace("AI:", "").strip() for line in lines if line.startswith("AI:")), None)
+        if user_msg and ai_msg:
+            history.append({"user": user_msg, "bot": ai_msg})
 
-    # Reverse chronological order 
-    history = history[::-1]
-
+    
     return jsonify({"history": history})
 
 if __name__ == '__main__':
