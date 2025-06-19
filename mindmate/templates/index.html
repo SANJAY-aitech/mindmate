@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MindMate AI - Mental Wellness Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.2/dist/purify.min.js"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -139,7 +142,7 @@
                 <div id="chat-section" class="hidden">
                     <div class="chat-container">
                         <div class="chat-messages" id="chat-messages">
-                            <div style="color: rgba(255,255,255,0.8); text-align: center; margin-top: 2rem;">
+                            <div style="color: rgba(12, 0, 0, 0.8); text-align: center; margin-top: 2rem;">
                                 Hi! I'm here to listen and support you. How can I help today?
                             </div>
                         </div>

@@ -140,7 +140,7 @@ function sendMessage() {
 function addUserMessage(message) {
     const chatMessages = document.getElementById('chat-messages');
     const msgDiv = document.createElement('div');
-    msgDiv.style.cssText = 'background: rgba(255,255,255,0.2); padding: 10px; border-radius: 10px; margin: 10px 0; text-align: right;';
+    msgDiv.classList.add('user-message');;
     msgDiv.textContent = message;
     chatMessages.appendChild(msgDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
@@ -156,7 +156,8 @@ function addAIResponse(response) {
 }
 
 function formatAIResponse(text) {
-     return marked.parse(text);
+    return DOMPurify.sanitize(marked.parse(text));
+
 }
 
 async function processUserMessage(message) {

@@ -391,7 +391,7 @@ body {
     border: 2px solid rgba(255, 255, 255, 0.3);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.2);
-    color: white;
+    color: rgb(9, 0, 0);
     font-size: 1rem;
 }
 
@@ -531,14 +531,32 @@ body {
 .hidden {
     display: none !important;
 }
+
+.user-message {
+    color: #f0eaff; 
+    background: rgba(83, 50, 140, 0.9); 
+    margin: 10px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    text-align: right;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 10px;
+     margin: 10px 0; 
+     text-align: right;
+}
 .ai-response {
-  background: rgba(255,255,255,0.1);
-  padding: 12px;
-  border-radius: 10px;
-  margin: 10px 0;
-  color: #ffffff;
-  line-height: 1.6;
-  font-size: 15px;
+ color: #d4f5f2; 
+    background: rgba(48, 58, 85, 0.85); 
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    text-align: left;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    white-space: pre-wrap;
+    
 }
 
 .ai-response ol {
